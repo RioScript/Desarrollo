@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.evaluarUsuarioYPermisos = (valorSesion) => {
         // Formato del value: "usuario|Rol|Sitio Asignado"
         const [usuario, rol, sitioAsignado] = valorSesion.split('|');
-        
+
         indicadorRol.innerText = rol;
 
         // Regla 1: Permisos de Carga
@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Regla 2: Filtrado por Sitio en la Pestaña de Aprobaciones ---
         const filasAprobacion = cuerpoAprobaciones.querySelectorAll('tr');
-        
+
         filasAprobacion.forEach(fila => {
             const sitioFila = fila.getAttribute('data-sitio');
-            
+
             // Si el sitio de la fila no coincide con el sitio asignado del supervisor (y no es ADMIN o TODOS)
             if (sitioAsignado !== 'TODOS' && sitioFila && sitioFila !== sitioAsignado) {
                 fila.style.display = 'none'; // Ocultar lo que no le corresponde
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         empCks.forEach(ck => {
             if (ck.checked) {
                 contador++;
-                
+
                 // Crear el elemento de la lista
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center py-1 px-2 small animate__animated animate__fadeInFast';
@@ -118,12 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 3. LÓGICA DE APROBACIONES (PESTAÑA 2)
     // ==========================================
-    
+
     // Cambiar estado de una sola fila (Aprobar / Rechazar)
     window.cambiarEstadoFila = (btn, nuevoEstado) => {
         const fila = btn.closest('tr');
         const badge = fila.querySelector('.badge');
-        
+
         if (badge) {
             badge.innerText = nuevoEstado;
             // Aplicar las clases oscuras que definimos en el CSS
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aprobar un grupo entero (por ejemplo: 'g-volcan' o 'g-mojon')
     window.aprobarGrupo = (claseGrupo) => {
         const filasGrupo = cuerpoAprobaciones.querySelectorAll(`.${claseGrupo}`);
-        
+
         filasGrupo.forEach(fila => {
             const badge = fila.querySelector('.badge');
             if (badge) {
@@ -146,12 +146,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 badge.className = 'badge badge-aprobado p-2';
             }
         });
-        
+
         console.log(`Grupo [${claseGrupo}] aprobado exitosamente.`);
     };
 
     if (selectUsuario) {
         // Disparar la verificación inicial para ajustar la vista según el usuario por defecto
         evaluarUsuarioYPermisos(selectUsuario.value);
+    }
+    // ==========================================
+    // 4. LÓGICA DE INTERCAMBIO DE MODO (TEMA)
+    // ==========================================
+    const btnThemeToggle = document.getElementById('btnThemeToggle');
+    const iconTheme = document.getElementById('iconTheme');
+    const txtTheme = document.getElementById('txtTheme');
+
+    // Comprobar si el usuario ya tenía una preferencia guardada anteriormente
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+        actualizarInterfazBoton(true);
+    }
+
+    if (btnThemeToggle) {
+        btnThemeToggle.addEventListener('click', () => {
+            // Alternar la clase en el body
+            const isLight = document.body.classList.toggle('light-mode');
+
+            // Guardar la elección en el almacenamiento local del navegador
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+
+            // Actualizar visualmente el botón
+            actualizarInterfazBoton(isLight);
+        });
+    }
+
+    function actualizarInterfazBoton(isLight) {
+        if (isLight) {
+            iconTheme.className = 'fas fa-moon text-primary'; // Cambia el icono a luna cian/dorada
+            txtTheme.innerText = 'Modo Oscuro';
+            btnThemeToggle.className = 'btn btn-light btn-sm d-flex align-items-center gap-1 border me-2';
+        } else {
+            iconTheme.className = 'fas fa-sun text-warning'; // Cambia el icono a sol amarillo
+            txtTheme.innerText = 'Modo Claro';
+            btnThemeToggle.className = 'btn btn-dark btn-sm d-flex align-items-center gap-1 border-secondary me-2';
+        }
     }
 });

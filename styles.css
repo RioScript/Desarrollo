@@ -1,30 +1,54 @@
 /* Importando Nueva Letra */
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
 
+/* PALETA DE COLORES (POR DEFECTO: MODO OSCURO) */
 :root {
     --bg-body: #1e1e1e;
     --bg-panel: #2d2d2d;
     --bg-panel-light: #3a3a3a;
     
-    /* Cambiado a un cian más sutil para acentos interactivos */
     --primary-color: #5bc0be; 
     --primary-color-dark: #006669;
     --secondary-color: #f39c12;
     
-    /* Paleta de textos mejorada para que sea agradable al ojo */
-    --text-main: #e0e0e0;       /* Texto general */
-    --text-title: #f5f5f5;      /* Títulos principales (Blanco limpio, no cian) */
-    --text-muted: #a0a6b2;      /* Gris azulado suave para textos secundarios */
-    --text-on-primary: #121212;
+    --text-main: #e0e0e0;       
+    --text-title: #f5f5f5;      
+    --text-muted: #a0a6b2;      
     --border-color: #444444;
+    --text-on-primary: #121212;
 }
 
-/* ESTILOS GENERALES */
+/* PALETA DE COLORES (MODO CLARO)*/
+body.light-mode {
+    --bg-body: #f4f6f9;         
+    --bg-panel: #ffffff;         
+    --bg-panel-light: #0d1b2a;   
+    
+    --primary-color: #e5a93b;   
+    --primary-color-dark: #b88124;
+    --secondary-color: #0d1b2a;  
+    
+    --text-main: #2b2d42;        
+    --text-title: #0d1b2a;     
+    --text-muted: #6c757d;       
+    --border-color: #dee2e6;     
+    --text-on-primary: #ffffff;  
+}
+
 body {
     font-family: "Bricolage Grotesque", Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-body);
     color: var(--text-main);
     font-size: 0.85rem;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave al cambiar de modo */
+}
+
+body.light-mode .table-header-custom th {
+    color: #ffffff !important; /* En modo claro, la cabecera es azul oscuro, la letra debe ser blanca */
+}
+
+body.light-mode input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0); /* Restaurar icono del calendario en fondo claro */
 }
 
 h1, h2, h3, h4, h5, h6, strong.text-uppercase {
