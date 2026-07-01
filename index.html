@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autorización de Descanso y Fatiga - LaboraTrack</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAVBAR SUPERIOR -->
+    <nav class="navbar navbar-expand-lg navbar-custom p-2 shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand d-flex align-items-center">
+                <strong class="text-uppercase" style="color: var(--primary-color); letter-spacing: 0.5px;">SISTEMA
+                    CONTROL LABORAL</strong>
+            </span>
+
+            <!-- SIMULADOR DE SESIÓN COMPLETO (Roles y Sitios Asignados) -->
+            <div class="ms-auto d-flex align-items-center gap-2 bg-light p-1 rounded border">
+                <i class="fas fa-user-shield text-secondary ms-1"></i>
+                <label class="small fw-bold text-secondary mb-0">Usuario:</label>
+                <select id="selectUsuario" class="form-select form-select-sm"
+                    onchange="evaluarUsuarioYPermisos(this.value)" style="width: 240px; font-size: 0.8rem;">
+                    <option value="admin|Administrador|TODOS">Gerardo Castillo (Administrador)</option>
+                    <option value="erwing.cano|Supervisor|VOLCAN">Erwing Cano (Sup. VOLCAN)</option>
+                    <option value="jose.ruiz|Supervisor|MOJON">Jose Luis Ruiz (Sup. MOJON)</option>
+                    <option value="fiscal1|Fiscal|TODOS">Fiscal de Campo (Ingreso)</option>
+                </select>
+                <span class="badge bg-dark p-2" id="indicadorRol">Admin</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MENÚ DE PESTAÑAS (TABS UNIFICADOS) -->
+    <div class="container-fluid bg-white pt-2 px-3 border-bottom">
+        <ul class="nav nav-tabs border-0" id="controlLaboralTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="carga-tab" data-bs-toggle="tab" data-bs-target="#carga-pane"
+                    type="button" role="tab"><i class="fas fa-user-check me-1"></i> Registro de Fatiga /
+                    Almuerzo</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="aprobacion-tab" data-bs-toggle="tab" data-bs-target="#aprobacion-pane"
+                    type="button" role="tab"><i class="fas fa-clipboard-check me-1"></i> Aprobaciones por Grupo</button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- CONTENIDO GENERAL DE PESTAÑAS -->
+    <div class="tab-content" id="tabsContent" class="container-fluid my-3">
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 1: CARGA DE REGISTROS (FISCAL / ADMIN) -->
+        <!-- ========================================== -->
+        <div class="tab-pane fade show active px-2" id="carga-pane" role="tabpanel" tabindex="0">
+            <!-- Barra de Acciones de Entrada -->
+            <div class="bg-white py-2 px-3 rounded shadow-sm d-flex flex-wrap align-items-center gap-2 my-3">
+                <h6 class="mb-0 me-3 fw-bold text-dark">Hora de fatiga</h6>
+                <div class="d-flex align-items-center gap-1">
+                    <label class="small mb-0">Fecha:</label>
+                    <input type="date" class="form-control form-control-sm" value="2026-06-27">
+                </div>
+                <button class="btn btn-warning btn-sm btn-fiscal-allow text-white fw-bold"><i class="fas fa-search"></i>
+                    Consultar</button>
+                <button class="btn btn-success btn-sm btn-fiscal-allow"><i class="fas fa-file-excel"></i>
+                    Exportar</button>
+                <button class="btn btn-sm text-white btn-fiscal-allow" style="background-color: var(--primary-color);"
+                    onclick="guardarRegistros()"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+
+            <div class="row">
+                <!-- Tabla del Catálogo de Empleados (Viene de tbl_empleados) -->
+                <div class="col-xl-9 col-lg-8 bg-white p-3 rounded shadow-sm mb-3">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover align-middle">
+                            <thead class="table-header-custom text-center">
+                                <tr>
+                                    <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
+                                    <th>CÓDIGO</th>
+                                    <th>NOMBRES Y APELLIDOS</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>PUESTO</th>
+                                    <th>SITIO</th>
+                                    <th>SUCURSAL</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaEmpleados">
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" class="emp-check" data-id="00018"
+                                            data-nombre="WILLIAN VLADIMIR ARAGON"></td>
+                                    <td class="fw-bold">00018</td>
+                                    <td>WILLIAN VLADIMIR ARAGON</td>
+                                    <td>PRODUCION</td>
+                                    <td>OPERADOR CAMION PESADO</td>
+                                    <td>MOJON</td>
+                                    <td>MINA VOLCAN</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" class="emp-check" data-id="00083"
+                                            data-nombre="JOSE FLORENTINO LOPEZ"></td>
+                                    <td class="fw-bold">00083</td>
+                                    <td>JOSE FLORENTINO LOPEZ</td>
+                                    <td>PRODUCION</td>
+                                    <td>OPERADOR CAMION PESADO</td>
+                                    <td>VOLCAN</td>
+                                    <td>MINA VOLCAN</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><input type="checkbox" class="emp-check" data-id="00088"
+                                            data-nombre="DENIS IVAN PAVON"></td>
+                                    <td class="fw-bold">00088</td>
+                                    <td>DENIS IVAN PAVON</td>
+                                    <td>TALLER</td>
+                                    <td>ESPECIALISTA E</td>
+                                    <td>VOLCAN</td>
+                                    <td>MINA VOLCAN</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Panel Lateral de Control de Seleccionados -->
+                <div class="col-xl-3 col-lg-4 sidebar-right p-3 rounded shadow-sm">
+                    <div class="table-header-custom p-2 rounded-top fw-bold text-center">COLABORADORES SELECCIONADOS
+                    </div>
+                    <div class="border p-3 rounded-bottom bg-light">
+                        <div class="mb-2 small fw-bold text-dark">Fecha Creación: <span
+                                class="text-muted fw-normal">27/06/2026</span></div>
+                        <div class="mb-2 text-dark fw-bold">Total seleccionados: <span id="totalSeleccionados"
+                                class="text-danger fs-5">0</span></div>
+
+                        <label class="form-label fw-bold mt-2">Notas:</label>
+                        <textarea id="notasCarga" class="form-control mb-3" rows="3"
+                            placeholder="Añadir observaciones..."></textarea>
+
+                        <label class="form-label fw-bold">Listado de Personal:</label>
+                        <ul class="list-group" id="listaSeleccionados" style="max-height: 220px; overflow-y: auto;">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PESTAÑA 2: APROBACIONES FILTRADAS POR SITIO -->
+        <!-- ========================================== -->
+        <div class="tab-pane fade px-2" id="aprobacion-pane" role="tabpanel" tabindex="0">
+            <div class="bg-white p-3 rounded shadow-sm my-2">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fas fa-layer-group text-warning"></i> Control de
+                        Aprobación de Almuerzos</h5>
+                    <span class="badge bg-secondary">Registros Pendientes de Validación</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-header-custom text-center">
+                            <tr>
+                                <th style="width: 110px;">FECHA</th>
+                                <th style="width: 90px;">CÓDIGO</th>
+                                <th>COLABORADOR (nombre_ape)</th>
+                                <th>ESTRUCTURA OPERATIVA (departament/puesto)</th>
+                                <th style="width: 120px;">ESTADO</th>
+                                <th style="width: 140px;">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoAprobaciones">
+
+                            <!-- GRUPO OPERATIVO: VOLCAN (Para Erwing Cano o Administrador) -->
+                            <tr class="group-header" data-sitio="VOLCAN">
+                                <td colspan="5"><i class="fas fa-mountain me-2"></i> SUCURSAL: MINA VOLCAN — SITIO:
+                                    VOLCAN</td>
+                                <td class="text-center">
+                                    <button class="btn btn-dark btn-xs btn-aprobador fw-bold"
+                                        onclick="aprobarGrupo('g-volcan')">Aprobar Grupo</button>
+                                </td>
+                            </tr>
+                            <tr class="g-volcan" data-sitio="VOLCAN">
+                                <td class="text-center fw-bold text-secondary">27/06/2026</td>
+                                <td class="fw-bold text-center">00083</td>
+                                <td>JOSE FLORENTINO LOPEZ</td>
+                                <td>PRODUCION <br><small class="text-muted">OPERADOR CAMION PESADO</small></td>
+                                <td class="text-center"><span class="badge badge-pendiente p-2">Pendiente</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-success btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Aprobado')" title="Aprobar"><i
+                                            class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Rechazado')" title="Rechazar"><i
+                                            class="fas fa-times"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="g-volcan" data-sitio="VOLCAN">
+                                <td class="text-center fw-bold text-secondary">27/06/2026</td>
+                                <td class="fw-bold text-center">00088</td>
+                                <td>DENIS IVAN PAVON</td>
+                                <td>TALLER <br><small class="text-muted">ESPECIALISTA E</small></td>
+                                <td class="text-center"><span class="badge badge-pendiente p-2">Pendiente</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-success btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Aprobado')" title="Aprobar"><i
+                                            class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Rechazado')" title="Rechazar"><i
+                                            class="fas fa-times"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- GRUPO OPERATIVO: MOJON (Para José Luis Ruiz o Administrador) -->
+                            <tr class="group-header" data-sitio="MOJON">
+                                <td colspan="5"><i class="fas fa-map-marker-alt me-2"></i> SUCURSAL: MINA VOLCAN —
+                                    SITIO: MOJON</td>
+                                <td class="text-center">
+                                    <button class="btn btn-dark btn-xs btn-aprobador fw-bold"
+                                        onclick="aprobarGrupo('g-mojon')">Aprobar Grupo</button>
+                                </td>
+                            </tr>
+                            <tr class="g-mojon" data-sitio="MOJON">
+                                <td class="text-center fw-bold text-secondary">27/06/2026</td>
+                                <td class="fw-bold text-center">00018</td>
+                                <td>WILLIAN VLADIMIR ARAGON</td>
+                                <td>PRODUCION <br><small class="text-muted">OPERADOR CAMION PESADO</small></td>
+                                <td class="text-center"><span class="badge badge-pendiente p-2">Pendiente</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-success btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Aprobado')" title="Aprobar"><i
+                                            class="fas fa-check"></i></button>
+                                    <button class="btn btn-danger btn-sm btn-aprobador"
+                                        onclick="cambiarEstadoFila(this, 'Rechazado')" title="Rechazar"><i
+                                            class="fas fa-times"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="index.js">
+    </script>
+</body>
+
+</html>

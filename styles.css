@@ -1,0 +1,220 @@
+/* Importando Nueva Letra */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
+:root {
+    --bg-body: #1e1e1e;
+    --bg-panel: #2d2d2d;
+    --bg-panel-light: #3a3a3a;
+    
+    /* Cambiado a un cian más sutil para acentos interactivos */
+    --primary-color: #5bc0be; 
+    --primary-color-dark: #006669;
+    --secondary-color: #f39c12;
+    
+    /* Paleta de textos mejorada para que sea agradable al ojo */
+    --text-main: #e0e0e0;       /* Texto general */
+    --text-title: #f5f5f5;      /* Títulos principales (Blanco limpio, no cian) */
+    --text-muted: #a0a6b2;      /* Gris azulado suave para textos secundarios */
+    --text-on-primary: #121212;
+    --border-color: #444444;
+}
+
+/* ESTILOS GENERALES */
+body {
+    font-family: "Bricolage Grotesque", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-size: 0.85rem;
+}
+
+h1, h2, h3, h4, h5, h6, strong.text-uppercase {
+    color: var(--text-title) !important;
+}
+
+.text-dark {
+    color: var(--text-main) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.bg-white {
+    background-color: var(--bg-panel) !important;
+}
+
+.bg-light {
+    background-color: var(--bg-panel-light) !important;
+}
+
+.border {
+    border-color: var(--border-color) !important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.navbar-custom {
+    background-color: var(--bg-panel);
+    border-bottom: 3px solid var(--primary-color-dark);
+}
+
+#selectUsuario {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+#selectUsuario:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(91, 192, 190, 0.25);
+}
+
+.nav-tabs {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-tabs .nav-link {
+    color: var(--text-muted);
+    font-weight: 600;
+    border: none;
+    background: none;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--primary-color);
+    border: none;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color) !important;
+    border: none !important;
+    border-bottom: 3px solid var(--primary-color) !important;
+    background-color: transparent !important;
+}
+
+.table {
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+    --bs-table-bg: var(--bg-panel) !important;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.03) !important;
+    --bs-table-hover-bg: rgba(91, 192, 190, 0.08) !important;
+}
+
+.table th, .table td {
+    background-color: transparent !important; 
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+}
+
+.table-header-custom {
+    background-color: var(--bg-panel-light) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+.table-header-custom th {
+    color: var(--text-title) !important;
+    font-weight: 700;
+}
+
+.group-header, .group-header td {
+    background-color: #232323 !important; 
+    color: var(--text-title) !important;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--bg-panel-light);
+    color: var(--text-main);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(91, 192, 190, 0.25);
+}
+
+.form-control::placeholder {
+    color: #666;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.sidebar-right {
+    background-color: var(--bg-panel);
+    border-left: 1px solid var(--border-color);
+    min-height: 65vh;
+}
+
+.sidebar-right .table-header-custom {
+    border-radius: 4px 4px 0 0;
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-color-dark);
+    color: white;
+    border: none;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-color);
+    color: var(--text-on-primary);
+}
+
+.btn-warning {
+    background-color: #d18800;
+    border-color: #d18800;
+}
+
+.btn-warning:hover {
+    background-color: #f39c12;
+    border-color: #f39c12;
+}
+
+.btn-dark {
+    background-color: #1a1a1a;
+    border-color: var(--border-color);
+}
+
+.btn-dark:hover {
+    background-color: #000;
+    border-color: var(--primary-color);
+}
+
+.badge-pendiente {
+    background-color: #a36800;
+    color: white;
+}
+
+.badge-aprobado {
+    background-color: #1e8449;
+    color: white;
+}
+
+.badge-rechazado {
+    background-color: #a93226;
+    color: white;
+}
+
+.list-group-item {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+.btn-xs {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .15) !important;
+}
